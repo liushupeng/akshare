@@ -9,6 +9,7 @@
 ```
  # 交易所期货数据
  "get_cffex_daily",  # 中国金融期货交易所每日交易数据
+ "futures_hist_daily_cffex",  # 中国金融期货交易所-每日交易数据
  "get_cffex_rank_table",  # 中国金融期货交易所前20会员持仓数据明细
  "get_czce_daily",  # 郑州商品交易所每日交易数据
  "get_rank_table_czce",  # 郑州商品交易所前20会员持仓数据明细
@@ -96,6 +97,7 @@
  "stock_zh_ah_name"  #  A+H 股所有股票代码
  # A股实时行情数据和历史行情数据
  "stock_zh_a_spot"  # 新浪 A 股实时行情数据
+ "stock_zh_a_spot_tx"  # 腾讯 A 股实时行情数据
  "stock_zh_a_spot_em"  # 东财 A 股实时行情数据
  "stock_sh_a_spot_em"  # 东财沪 A 股实时行情数据
  "stock_sz_a_spot_em"  # 东财深 A 股实时行情数据
@@ -876,6 +878,7 @@
  "fund_report_stock_cninfo"  # 基金报表-基金重仓股
  # 公告大全-沪深 A 股公告
  "stock_notice_report"  # 公告大全-沪深 A 股公告
+ "stock_individual_notice_report"  # 公告大全-沪深 A 股个股公告
  # 基金报表-基金行业配置
  "fund_report_industry_allocation_cninfo"  # 基金报表-基金行业配置
  "fund_report_asset_allocation_cninfo"  # 基金报表-基金资产配置
@@ -883,6 +886,7 @@
  "fund_scale_open_sina"  # 基金规模-开放式基金
  "fund_scale_close_sina"  # 基金规模-封闭式基金
  "fund_scale_structured_sina"  # 基金规模-分级子基金
+ "fund_scale_daily_szse"  # 深圳证券交易所-基金产品-基金规模-日频数据
  # 沪深港通持股
  "stock_hsgt_individual_em"  # 沪深港通持股-具体股票
  "stock_hsgt_individual_detail_em"  # 沪深港通持股-具体股票-详情
@@ -1377,6 +1381,10 @@
  "bond_gb_zh_sina"  # 新浪财经-债券-中国国债收益率行情数据
  # 期货交易所结算参数
  "futures_settle"  # 期货交易所结算参数
+ # 基金基本信息-同花顺
+ "fund_info_ths"  # 基金基本信息-同花顺
+ # TapTap 游戏榜单
+ "game_hot_rank_taptap"  # TapTap 游戏榜单
 ```
 
 ## 案例演示

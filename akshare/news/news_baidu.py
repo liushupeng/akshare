@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 # !/usr/bin/env python
 """
-Date: 2025/12/1 22:00
+Date: 2026/4/12 17:00
 Desc: 百度股市通-经济数据
-https://gushitong.baidu.com/calendar
+https://finance.baidu.com/calendar
 """
 
 import math
@@ -15,9 +15,9 @@ from curl_cffi import requests
 
 def _get_baidu_cookie(headers: dict) -> str:
     """
-    安全获取百度股市通所需的Cookie
+    安全获取百度股市通所需的 Cookie
     :param headers: 基础请求头
-    :return: 格式化的Cookie字符串
+    :return: 格式化的 Cookie字符串
     :raises ValueError: 当无法获取必要Cookie时
     :raises ConnectionError: 网络请求失败时
     """
@@ -28,7 +28,7 @@ def _get_baidu_cookie(headers: dict) -> str:
 
             # 第一步：获取基础Cookie (BAIDUID系列)
             resp1 = session.get(
-                "https://gushitong.baidu.com/calendar",
+                "https://finance.baidu.com/calendar",
                 impersonate="chrome110",
                 timeout=10,
             )
@@ -109,10 +109,10 @@ def _baidu_finance_calendar(
         "accept-encoding": "gzip, deflate, br, zstd",
         "accept-language": "en,zh-CN;q=0.9,zh;q=0.8",
         "cache-control": "no-cache",
-        "origin": "https://gushitong.baidu.com",
+        "origin": "https://finance.baidu.com",
         "pragma": "no-cache",
         "priority": "u=1, i",
-        "referer": "https://gushitong.baidu.com/",
+        "referer": "https://finance.baidu.com/",
         "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
         "Chrome/142.0.0.0 Safari/537.36",
     }
@@ -265,10 +265,10 @@ def _process_suspend_data(data_list: list) -> pd.DataFrame:
 def news_economic_baidu(date: str = "20251126", cookie: str = None) -> pd.DataFrame:
     """
     百度股市通-经济数据
-    https://gushitong.baidu.com/calendar
+    https://finance.baidu.com/calendar
     :param date: 查询日期 (格式: YYYYMMDD)
     :param cookie: cookie
-    :return: 经济数据DataFrame
+    :return: 经济数据 pd.DataFrame
     """
     return _baidu_finance_calendar(
         date=date,
@@ -283,7 +283,7 @@ def news_trade_notify_suspend_baidu(
 ) -> pd.DataFrame:
     """
     百度股市通-交易提醒-停复牌
-    https://gushitong.baidu.com/calendar
+    https://finance.baidu.com/calendar
     :param date: 查询日期 (格式: YYYYMMDD)
     :param cookie: cookie
     :return: 停复牌数据DataFrame
@@ -357,7 +357,7 @@ def news_trade_notify_dividend_baidu(
 ) -> pd.DataFrame:
     """
     百度股市通-交易提醒-分红派息
-    https://gushitong.baidu.com/calendar
+    https://finance.baidu.com/calendar
     :param date: 查询日期 (格式: YYYYMMDD)
     :param cookie: cookie
     :return: 交易提醒-分红派息DataFrame
@@ -434,7 +434,7 @@ def _process_report_data(data_list: list) -> pd.DataFrame:
 def news_report_time_baidu(date: str = "20251126", cookie: str = None) -> pd.DataFrame:
     """
     百度股市通-财报发行
-    https://gushitong.baidu.com/calendar
+    https://finance.baidu.com/calendar
     :param date: 查询日期 (格式: YYYYMMDD)
     :param cookie: cookie
     :return: 财报发行DataFrame

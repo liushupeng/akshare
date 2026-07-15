@@ -2394,7 +2394,7 @@ print(bond_new_composite_index_cbond_df)
 
 目标地址: https://yield.chinabond.com.cn/cbweb-mn/indices/single_index_query
 
-描述: 中国债券信息网-中债指数-中债指数族系-总指数-综合类指数-中债-综合指数
+描述: 中国债券信息网-中债指数-中债指数族系-分类指数-按待偿期限
 
 输入参数
 
@@ -2435,4 +2435,153 @@ print(bond_composite_index_cbond_df)
 5432  2023-09-14  232.5994
 5433  2023-09-17  232.5021
 [5434 rows x 2 columns]
+```
+
+###### 国债指数
+
+接口: bond_treasury_index_cbond
+
+目标地址: https://yield.chinabond.com.cn/cbweb-mn/indices/single_index_query
+
+描述: 中国债券信息网-中债指数-中债指数族系-总指数-综合类指数-中债-国债指数
+
+输入参数
+
+| 名称        | 类型  | 描述                                                                                                                           |
+|-----------|-----|------------------------------------------------------------------------------------------------------------------------------|
+| indicator | str | indicator="财富"; choice of {"全价", "净价", "财富"}                                                                                 |
+| period    | str | period="5Y"; choice of {'0-1Y', '0-3Y', '0-5Y', '0-10Y', '1-3Y', '1-5Y', '1-10Y', '3-5Y', '5Y', '7Y', '7-10Y', '10Y', '30Y'} |
+
+输出参数
+
+| 名称    | 类型      | 描述   |
+|-------|---------|------|
+| date  | object  | -    |
+| value | float64 | 注意单位 |
+
+接口示例
+
+```python
+import akshare as ak
+
+bond_treasury_index_cbond_df = ak.bond_treasury_index_cbond(indicator="财富", period="5Y")
+print(bond_treasury_index_cbond_df)
+```
+
+数据示例
+
+```
+            date     value
+0     2008-01-02  100.1752
+1     2008-01-03  100.1729
+2     2008-01-04  100.2592
+3     2008-01-07  100.3394
+4     2008-01-08  100.4001
+...          ...       ...
+4562  2026-04-03  210.4979
+4563  2026-04-07  210.5423
+4564  2026-04-08  210.5118
+4565  2026-04-09  210.4856
+4566  2026-04-10  210.4820
+[4567 rows x 2 columns]
+```
+
+#### 中债指数族系
+
+##### 可选指数
+
+接口: bond_available_index_cbond
+
+目标地址: https://yield.chinabond.com.cn/cbweb-mn/indices/singleIndexQueryResult
+
+描述: 中国债券信息网-中债指数-中债指数族系当中, 非指定期限部分的可选指数
+
+输入参数
+
+| 名称 | 类型 | 描述 |
+|----|----|----|
+| -  | -  | -  |
+
+输出参数
+
+| 名称    | 类型  | 描述 |
+|-------|-----|----|
+| index | int | -  |
+| value | str | -  |
+
+接口示例
+
+```python
+import akshare as ak
+
+bond_available_index_cbond_df = ak.bond_available_index_cbond()
+print(bond_available_index_cbond_df)
+```
+
+数据示例
+
+```
+     index                    value
+0        1                    新综合指数
+1        2            高等级科技创新债券综合指数
+2        3             长江养老年金基金债券指数
+3        4  中信证券挂钩DR浮动利率政策性银行债活跃券指数
+4        5            股份制商业银行同业存单指数
+..     ...                      ...
+308    309             粤港澳大湾区债券综合指数
+309    310               利差驱动股债稳健指数
+310    311           中债信用增进公司增信债券指数
+311    312                 银行金融债券指数
+312    313               乡村振兴债券综合指数
+[313 rows x 2 columns]
+```
+
+##### 指数族系查询
+
+接口: bond_index_general_cbond
+
+目标地址: https://yield.chinabond.com.cn/cbweb-mn/indices/singleIndexQueryResult
+
+描述: 中国债券信息网-中债指数-中债指数族系
+
+输入参数
+
+| 名称             | 类型  | 描述                                                                                                                                                                                                       |
+|----------------|-----|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| index_category | str | index_category="新综合指数"; index_category 取值参考 `ak.bond_available_index_cbond()` 的返回结果                                                                                                                      |
+| indicator      | str | indicator="财富"; choice of {"全价", "净价", "财富", "平均市值法久期", "平均现金流法久期", "平均市值法凸性", "平均现金流法凸性", "平均现金流法到期收益率", "平均市值法到期收益率", "平均基点价值", "平均待偿期", "平均派息率", "指数上日总市值", "财富指数涨跌幅", "全价指数涨跌幅", "净价指数涨跌幅", "现券结算量"} |
+| periods        | str | period="总值"; choice of {"总值", "1年以下", "1-3年", "3-5年", "5-7年", "7-10年", "10年以上", "0-3个月", "3-6个月", "6-9个月", "9-12个月", "0-6个月", "6-12个月"}                                                                  |
+
+输出参数
+
+| 名称    | 类型      | 描述   |
+|-------|---------|------|
+| date  | object  | 时间索引 |
+| value | float64 | 注意单位 |
+
+接口示例
+
+```python
+import akshare as ak
+
+bond_index_general_cbond_df = ak.bond_index_general_cbond(index_category="新综合指数", indicator="全价", period="总值")
+print(bond_index_general_cbond_df)
+```
+
+数据示例
+
+```
+            date     value
+0     2002-01-04   99.9731
+1     2002-01-07  100.0149
+2     2002-01-08   99.8273
+3     2002-01-09  100.0203
+4     2002-01-10   99.9317
+...          ...       ...
+6065  2026-04-03  129.1454
+6066  2026-04-07  129.2360
+6067  2026-04-08  129.3017
+6068  2026-04-09  129.3146
+6069  2026-04-10  129.3696
+[6070 rows x 2 columns]
 ```

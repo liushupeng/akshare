@@ -3256,10 +3256,29 @@ amac_manager_cancelled_info # 中国证券投资基金业协会-信息公示-诚
 1.18.48 fix: fix stock_individual_spot_xq interface
 1.18.49 fix: fix macro_china_urban_unemployment interface
 1.18.50 fix: fix stock_gpzy_individual_pledge_ratio_detail_em interface
+1.18.51 fix: fix stock_a_gxl_lg interface
+1.18.52 fix: fix fund_scale_daily_szse interface
+1.18.53 fix: fix futures_hist_daily_cffex interface
+1.18.54 fix: fix stock_individual_notice_report interface
+1.18.55 fix: fix bond_index_general_cbond interface
+1.18.56 fix: fix stock_zh_a_spot_tx interface
+1.18.57 fix: fix bond_info_detail_cm interface
+1.18.58 fix: fix stock_individual_spot_xq interface
+1.18.59 fix: fix stock_board_concept_hist_min_em interface
+1.18.60 fix: fix stock_zh_index_daily_tx interface
+1.18.61 fix: fix stock_individual_spot_xq interface
+1.18.62 fix: fix stock_market_activity_legu interface
+1.18.63 fix: fix stock_a_high_low_statistics interface
+1.18.64 fix: fix stock_buffett_index_lg interface
 """
 
 from akshare._version import __version__
 __author__ = "AKFamily"
+
+"""
+TapTap 游戏榜单
+"""
+from akshare.other.other_taptap import game_hot_rank_taptap
 
 """
 期货结算
@@ -3466,6 +3485,11 @@ from akshare.option.option_daily_stats_sse_szse import option_daily_stats_sse, o
 同花顺理财-基金数据-每日净值-ETF
 """
 from akshare.fund.fund_etf_ths import fund_etf_spot_ths, fund_etf_category_ths
+
+"""
+同花顺-基金数据-基金基本信息
+"""
+from akshare.fund.fund_info_ths import fund_info_ths
 
 """
 东方财富网-数据中心-融资融券-融资融券账户统计-两融账户信息
@@ -3752,6 +3776,11 @@ from akshare.fund.fund_etf_sse import fund_etf_scale_sse
 from akshare.fund.fund_etf_szse import fund_etf_scale_szse
 
 """
+深圳证券交易所-基金规模日频数据
+"""
+from akshare.fund.fund_scale_szse import fund_scale_daily_szse
+
+"""
 乐咕乐股-股债利差
 """
 from akshare.stock_feature.stock_ebs_lg import stock_ebs_lg
@@ -3905,11 +3934,14 @@ from akshare.stock_feature.stock_hsgt_exchange_rate import (
 )
 
 """
-中国债券信息网-中债指数-中债指数族系-总指数-综合类指数
+中国债券信息网-中债指数-中债指数族系
 """
 from akshare.bond.bond_cbond import (
     bond_new_composite_index_cbond,
     bond_composite_index_cbond,
+    bond_available_index_cbond,
+    bond_index_general_cbond,
+    bond_treasury_index_cbond,
 )
 
 """
@@ -4620,7 +4652,10 @@ from akshare.stock_feature.stock_lh_yybpm import (
 """
 沪深 A 股公告
 """
-from akshare.stock_fundamental.stock_notice import stock_notice_report
+from akshare.stock_fundamental.stock_notice import (
+    stock_notice_report,
+    stock_individual_notice_report,
+)
 
 """
 首发企业申报
@@ -5863,6 +5898,7 @@ from akshare.futures.futures_daily_bar import (
     get_futures_daily,
     get_ine_daily,
     get_gfex_daily,
+    futures_hist_daily_cffex
 )
 
 """

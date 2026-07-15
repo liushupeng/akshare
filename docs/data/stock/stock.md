@@ -7331,7 +7331,7 @@ print(stock_hk_ggt_components_em_df)
 
 描述: 东方财富-数据中心-沪深港通-市场概括-分时数据
 
-限量: 单次返回指定 symbol 的所有数据
+限量: 单次返回指定 symbol 的所有数据；20240513起数据源不再提供数据
 
 输入参数
 
@@ -11448,6 +11448,68 @@ print(stock_notice_report_df)
 137  600583  ...  https://data.eastmoney.com/notices/detail/6005...
 138  001301  ...  https://data.eastmoney.com/notices/detail/0013...
 [139 rows x 6 columns]
+```
+
+#### 沪深京 A 股个股公告
+
+接口: stock_individual_notice_report
+
+目标地址: https://data.eastmoney.com/notices/stock/300237.html
+
+描述: 东方财富网-数据中心-公告大全-个股
+
+限量: 单次获取指定 security, symbol, begin_date 和 end_date 的数据
+
+输入参数
+
+| 名称         | 类型  | 描述                                                                                      |
+|------------|-----|-----------------------------------------------------------------------------------------|
+| security   | str | security="300237"; 股票代码                                                                 |
+| symbol     | str | symbol='财务报告'; choice of {"全部", "重大事项", "财务报告", "融资公告", "风险提示", "资产重组", "信息变更", "持股变动"} |
+| begin_date | str | date="20250408"; 指定开始日期; 默认为空即不限制开始日期                                                   |
+| end_date   | str | date="20260408"; 指定结束日期; 默认为空即不限制结束日期                                                   |
+
+输出参数
+
+| 名称   | 类型     | 描述  |
+|------|--------|-----|
+| 代码   | object | -   |
+| 名称   | object | -   |
+| 公告标题 | object | -   |
+| 公告类型 | object | -   |
+| 公告日期 | object | -   |
+| 网址   | object | -   |
+
+接口示例
+
+```python
+import akshare as ak
+
+stock_individual_notice_report_df = ak.stock_individual_notice_report(security="300237", symbol="财务报告", begin_date="20250401", end_date="20260101")
+print(stock_individual_notice_report_df)
+```
+
+数据示例
+
+```
+    代码    名称  ...        公告日期                          网址
+0   300237  ST美晨  ...  2025-10-31  https://data.eastmoney.com/notices/detail/3002...
+1   300237  ST美晨  ...  2025-10-31  https://data.eastmoney.com/notices/detail/3002...
+2   300237  ST美晨  ...  2025-10-31  https://data.eastmoney.com/notices/detail/3002...
+3   300237  ST美晨  ...  2025-10-31  https://data.eastmoney.com/notices/detail/3002...
+4   300237  ST美晨  ...  2025-08-26  https://data.eastmoney.com/notices/detail/3002...
+5   300237  ST美晨  ...  2025-08-26  https://data.eastmoney.com/notices/detail/3002...
+6   300237  ST美晨  ...  2025-05-13  https://data.eastmoney.com/notices/detail/3002...
+7   300237  ST美晨  ...  2025-04-26  https://data.eastmoney.com/notices/detail/3002...
+8   300237  ST美晨  ...  2025-04-22  https://data.eastmoney.com/notices/detail/3002...
+9   300237  ST美晨  ...  2025-04-22  https://data.eastmoney.com/notices/detail/3002...
+10  300237  ST美晨  ...  2025-04-22  https://data.eastmoney.com/notices/detail/3002...
+11  300237  ST美晨  ...  2025-04-22  https://data.eastmoney.com/notices/detail/3002...
+12  300237  ST美晨  ...  2025-04-22  https://data.eastmoney.com/notices/detail/3002...
+13  300237  ST美晨  ...  2025-04-22  https://data.eastmoney.com/notices/detail/3002...
+14  300237  ST美晨  ...  2025-04-22  https://data.eastmoney.com/notices/detail/3002...
+15  300237  ST美晨  ...  2025-01-21  https://data.eastmoney.com/notices/detail/3002...
+[16 rows x 6 columns]
 ```
 
 #### 财务报表-新浪
@@ -17242,8 +17304,6 @@ print(stock_ebs_lg_df)
 | 收盘价    | float64 | -                              |
 | 总市值    | float64 | A股收盘价*已发行股票总股本（A股+B股+H股）       |
 | GDP    | float64 | 上年度国内生产总值（例如：2019年，则取2018年GDP） |
-| 近十年分位数 | float64 | 当前"总市值/GDP"在历史数据上的分位数          |
-| 总历史分位数 | float64 | 当前"总市值/GDP"在历史数据上的分位数          |
 
 接口示例
 
@@ -17257,19 +17317,19 @@ print(stock_buffett_index_lg_df)
 数据示例
 
 ```
-            日期   收盘价       总市值      GDP   近十年分位数  总历史分位数
-0     2005-04-07  1003.45   38470.47   161840.16  1.00000  1.00000
-1     2005-04-10   995.42   39184.81   161840.16  1.00000  1.00000
-2     2005-04-11   978.70   38955.09   161840.16  0.66667  0.66667
-3     2005-04-12  1000.90   38287.33   161840.16  0.25000  0.25000
-4     2005-04-13   986.98   39166.32   161840.16  0.80000  0.80000
-...          ...      ...        ...         ...      ...      ...
-4646  2024-05-26  3635.71  894146.43  1260582.10  0.34239  0.47837
-4647  2024-05-27  3609.17  888429.78  1260582.10  0.32593  0.46601
-4648  2024-05-28  3613.52  889703.17  1260582.10  0.32840  0.46870
-4649  2024-05-29  3594.31  884208.63  1260582.10  0.31235  0.45699
-4650  2024-05-30  3579.92  884322.56  1260582.10  0.31304  0.45732
-[4651 rows x 6 columns]
+         日期      收盘价         总市值        GDP
+0     2005-04-08  1003.45    38470.47   161840.16
+1     2005-04-11   995.42    39184.81   161840.16
+2     2005-04-12   978.70    38955.09   161840.16
+3     2005-04-13  1000.90    38287.33   161840.16
+4     2005-04-14   986.98    39166.32   161840.16
+...          ...      ...         ...         ...
+5125  2026-05-20  4850.70  1343475.14  1401879.00
+5126  2026-05-21  4783.10  1314824.23  1401879.00
+5127  2026-05-22  4845.10  1336559.01  1401879.00
+5128  2026-05-25  4921.60  1349958.28  1401879.00
+5129  2026-05-26  4947.85  1345774.20  1401879.00
+[5130 rows x 4 columns]
 ```
 
 #### A 股等权重与中位数市盈率
