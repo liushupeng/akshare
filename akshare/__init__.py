@@ -3270,10 +3270,41 @@ amac_manager_cancelled_info # 中国证券投资基金业协会-信息公示-诚
 1.18.62 fix: fix stock_market_activity_legu interface
 1.18.63 fix: fix stock_a_high_low_statistics interface
 1.18.64 fix: fix stock_buffett_index_lg interface
+1.18.65 fix: fix fund_portfolio_hold_em interface
+1.18.66 fix: fix stock_yysj_em interface
+1.18.67 fix: fix stock_zh_a_disclosure_report_cninfo interface
+1.18.68 fix: fix index_realtime_sw interface
+1.18.69 fix: fix stock_zh_a_hist_tx interface
+1.18.70 fix: fix stock_a_below_net_asset_statistics interface
+1.18.71 fix: fix NBS macro interfaces
+1.18.72 fix: fix stock_cg_lawsuit_cninfo interface
+1.18.73 fix: fix stock_sector_fund_flow_rank interface
+1.18.74 fix: fix stock_margin_bse interface
+1.18.75 fix: fix stock_gdfx_free_holding_detail_em interface
+1.18.76 fix: fix Python 3.9 compatibility regression
+1.18.77 fix: fix futures_inventory_99 interface
+1.18.78 fix: fix fund_value_estimation_em interface
+1.18.79 fix: fix amac_aoin_info interface
+1.18.80 fix: fix Xueqiu stock info interfaces
+1.18.81 fix: fix fund_value_estimation_em interface
 """
 
 from akshare._version import __version__
 __author__ = "AKFamily"
+
+"""
+京证券交易所融资融券数据
+"""
+from akshare.stock_feature.stock_margin_bse import (
+    stock_margin_bse,
+    stock_margin_detail_bse,
+    stock_margin_underlying_info_bse,
+)
+
+"""
+腾讯证券-沪深京-实时行情数据
+"""
+from akshare.stock.stock_zh_a_tx import stock_zh_a_spot_tx
 
 """
 TapTap 游戏榜单
@@ -4402,6 +4433,15 @@ from akshare.stock_feature.stock_margin_szse import (
     stock_margin_underlying_info_szse,
     stock_margin_detail_szse,
     stock_margin_szse,
+)
+
+"""
+融资融券-北京证券交易所
+"""
+from akshare.stock_feature.stock_margin_bse import (
+    stock_margin_bse,
+    stock_margin_detail_bse,
+    stock_margin_underlying_info_bse,
 )
 
 """

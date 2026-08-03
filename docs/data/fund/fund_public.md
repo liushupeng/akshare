@@ -2753,17 +2753,19 @@ print(fund_individual_achievement_xq_df)
 
 接口: fund_value_estimation_em
 
-目标地址: http://fund.eastmoney.com/fundguzhi.html
+目标地址: https://fund.eastmoney.com/lof_fundguzhi1.html
 
 描述: 东方财富网-数据中心-净值估算
 
 限量: 单次返回当前交易日指定 symbol 的所有数据
 
+说明: 东方财富旧统一估值接口当前大多返回“暂无数据”; AKShare 现对 `全部` 和 `指数型` 改为解析东财仍公开可见的静态估值页, 其余类别若上游未提供数据则返回空的 `pandas.DataFrame`
+
 输入参数
 
 | 名称     | 类型  | 描述                                                                                                    |
 |--------|-----|-------------------------------------------------------------------------------------------------------|
-| symbol | str | symbol='全部'; 默认返回所有数据; choice of {'全部', '股票型', '混合型', '债券型', '指数型', 'QDII', 'ETF联接', 'LOF', '场内交易基金'} |
+| symbol | str | symbol='全部'; choice of {'全部', '股票型', '混合型', '债券型', '指数型', 'QDII', 'ETF联接', 'LOF', '场内交易基金'} |
 
 输出参数
 
@@ -3101,7 +3103,7 @@ print(fund_individual_detail_info_xq_df)
 | 名称     | 类型  | 描述                                                       |
 |--------|-----|----------------------------------------------------------|
 | symbol | str | symbol="000001"; 基金代码, 可以通过调用 **ak.fund_name_em()** 接口获取 |
-| date   | str | date="2024"; 指定年份                                        |
+| date   | str | date="2024"; 指定年份, 传入空字符串 `""` 时返回最新可用年份数据          |
 
 输出参数
 
@@ -3144,7 +3146,7 @@ print(fund_portfolio_hold_em_df)
 
 接口: fund_portfolio_bond_hold_em
 
-目标地址: https://fundf10.eastmoney.com/ccmx_000001.html
+目标地址: https://fundf10.eastmoney.com/ccmx1_000001.html
 
 描述: 天天基金网-基金档案-投资组合-债券持仓
 
