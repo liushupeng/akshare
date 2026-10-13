@@ -23,7 +23,7 @@ def stock_financial_abstract_ths(
     https://basic.10jqka.com.cn/new/000063/finance.html
     :param symbol: 股票代码
     :type symbol: str
-    :param indicator: 指标; choice of {"按报告期", "按年度", "按单季度"}
+    :param indicator: 指标；choice of {"按报告期", "按年度", "按单季度"}
     :type indicator: str
     :return: 同花顺-财务指标-主要指标
     :rtype: pandas.DataFrame
@@ -64,7 +64,7 @@ def stock_financial_debt_ths(
     https://basic.10jqka.com.cn/api/stock/finance/000063_debt.json
     :param symbol: 股票代码
     :type symbol: str
-    :param indicator: 指标; choice of {"按报告期", "按年度"}
+    :param indicator: 指标；choice of {"按报告期", "按年度"}
     :type indicator: str
     :return: 同花顺-财务指标-资产负债表
     :rtype: pandas.DataFrame
@@ -98,7 +98,7 @@ def stock_financial_benefit_ths(
     https://basic.10jqka.com.cn/api/stock/finance/000063_benefit.json
     :param symbol: 股票代码
     :type symbol: str
-    :param indicator: 指标; choice of {"按报告期","按单季度", "按年度"}
+    :param indicator: 指标；choice of {"按报告期","按单季度", "按年度"}
     :type indicator: str
     :return: 同花顺-财务指标-利润表
     :rtype: pandas.DataFrame
@@ -136,7 +136,7 @@ def stock_financial_cash_ths(
     https://basic.10jqka.com.cn/api/stock/finance/000063_cash.json
     :param symbol: 股票代码
     :type symbol: str
-    :param indicator: 指标; choice of {"按报告期","按单季度", "按年度"}
+    :param indicator: 指标；choice of {"按报告期","按单季度", "按年度"}
     :type indicator: str
     :return: 同花顺-财务指标-现金流量表
     :rtype: pandas.DataFrame
@@ -178,13 +178,13 @@ def __get_market_code(stock_code: str = "000063") -> int:
     # 检查代码长度
     if len(stock_code) < 6:
         raise "请输入正确的股票代码"
-    # 深交所股票: 000, 001, 002, 003, 300开头 (market代码33)
+    # 深交所股票：000, 001, 002, 003, 300开头 (market代码33)
     if stock_code.startswith(("000", "001", "002", "003", "300")):
         return 33
-    # 上交所股票: 600, 601, 603, 605, 688开头 (market代码17)
+    # 上交所股票：600, 601, 603, 605, 688开头 (market代码17)
     if stock_code.startswith(("600", "601", "603", "605", "688")):
         return 17
-    # 北交所股票: 920开头 (market代码151)
+    # 北交所股票：920开头 (market代码151)
     if stock_code.startswith("920"):
         return 151
     # 其他情况无法识别
@@ -199,7 +199,7 @@ def stock_financial_abstract_new_ths(
     https://basic.10jqka.com.cn/new/000063/finance.html
     :param symbol: 股票代码
     :type symbol: str
-    :param indicator: 指标; choice of {"按报告期", "一季度", "二季度", "三季度", "四季度", "按年度"}
+    :param indicator: 指标；choice of {"按报告期", "一季度", "二季度", "三季度", "四季度", "按年度"}
     :type indicator: str
     :return: 同花顺-财务指标-主要指标
     :rtype: pandas.DataFrame
@@ -296,7 +296,7 @@ def stock_financial_debt_new_ths(
     https://basic.10jqka.com.cn/astockpc/astockmain/index.html#/financen?code=000063
     :param symbol: 股票代码
     :type symbol: str
-    :param indicator: 指标; choice of {"按报告期", "按年度"}
+    :param indicator: 指标；choice of {"按报告期", "一季度", "二季度", "三季度", "四季度", "按年度"}
     :type indicator: str
     :return: 同花顺-财务指标-资产负债表
     :rtype: pandas.DataFrame
@@ -304,6 +304,14 @@ def stock_financial_debt_new_ths(
     url = "https://basic.10jqka.com.cn/basicapi/finance/index/v1/app_data/"
     if indicator == "按报告期":
         period = "0"
+    elif indicator == "一季度":
+        period = "1"
+    elif indicator == "二季度":
+        period = "2"
+    elif indicator == "三季度":
+        period = "3"
+    elif indicator == "四季度":
+        period = "4"
     else:
         period = "4"
     params = {
@@ -385,7 +393,7 @@ def stock_financial_benefit_new_ths(
     https://basic.10jqka.com.cn/astockpc/astockmain/index.html#/financen?code=000063
     :param symbol: 股票代码
     :type symbol: str
-    :param indicator: 指标; choice of {"按报告期", "一季度", "二季度", "三季度", "四季度", "按年度"}
+    :param indicator: 指标；choice of {"按报告期", "一季度", "二季度", "三季度", "四季度", "按年度"}
     :type indicator: str
     :return: 同花顺-财务指标-利润表
     :rtype: pandas.DataFrame
@@ -482,7 +490,7 @@ def stock_financial_cash_new_ths(
     https://basic.10jqka.com.cn/astockpc/astockmain/index.html#/financen?code=000063
     :param symbol: 股票代码
     :type symbol: str
-    :param indicator: 指标; choice of {"按报告期", "一季度", "二季度", "三季度", "四季度", "按年度"}
+    :param indicator: 指标；choice of {"按报告期", "一季度", "二季度", "三季度", "四季度", "按年度"}
     :type indicator: str
     :return: 同花顺-财务指标-现金流量表
     :rtype: pandas.DataFrame

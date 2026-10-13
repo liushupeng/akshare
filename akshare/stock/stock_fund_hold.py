@@ -9,6 +9,29 @@ http://data.eastmoney.com/zlsj/2020-06-30-1-2.html
 import pandas as pd
 import requests
 
+_FUND_HOLD_TIMEOUT: int = 15
+_STOCK_REPORT_FUND_HOLD_COLUMNS: list[str] = [
+    "序号",
+    "股票代码",
+    "股票简称",
+    "持有基金家数",
+    "持股总数",
+    "持股市值",
+    "持股变化",
+    "持股变动数值",
+    "持股变动比例",
+]
+_STOCK_REPORT_FUND_HOLD_RENAME_MAP: dict[str, str] = {
+    "SECURITY_CODE": "股票代码",
+    "SECURITY_NAME_ABBR": "股票简称",
+    "HOULD_NUM": "持有基金家数",
+    "TOTAL_SHARES": "持股总数",
+    "HOLD_VALUE": "持股市值",
+    "HOLDCHA": "持股变化",
+    "HOLDCHA_NUM": "持股变动数值",
+    "HOLDCHA_RATIO": "持股变动比例",
+}
+
 
 def stock_report_fund_hold(
     symbol: str = "基金持仓", date: str = "20210331"
@@ -18,7 +41,7 @@ def stock_report_fund_hold(
     http://data.eastmoney.com/zlsj/2020-12-31-1-2.html
     :param symbol: choice of {"基金持仓", "QFII持仓", "社保持仓", "券商持仓", "保险持仓", "信托持仓"}
     :type symbol: str
-    :param date: 财报发布日期, xxxx-03-31, xxxx-06-30, xxxx-09-30, xxxx-12-31
+    :param date: 财报发布日期，xxxx-03-31, xxxx-06-30, xxxx-09-30, xxxx-12-31
     :type date: str
     :return: 基金持仓数据
     :rtype: pandas.DataFrame
@@ -44,10 +67,10 @@ def stock_report_fund_hold(
         "p": "1",
         "pageNo": "1",
     }
-    r = requests.get(url, params=params)
+    r = requests.get(url, params=params, timeout=_FUND_HOLD_TIMEOUT)
     data_json = r.json()
     total_page = data_json["pages"]
-    big_df = pd.DataFrame()
+    big_df_list: list[pd.DataFrame] = []
     for page in range(1, total_page + 1):
         params = {
             "date": date,
@@ -60,50 +83,27 @@ def stock_report_fund_hold(
             "p": page,
             "pageNo": page,
         }
-        r = requests.get(url, params=params)
+        r = requests.get(url, params=params, timeout=_FUND_HOLD_TIMEOUT)
         data_json = r.json()
         temp_df = pd.DataFrame(data_json["data"])
-        big_df = pd.concat([big_df, temp_df], ignore_index=True)
-    big_df.reset_index(inplace=True)
-    big_df["index"] = list(range(1, len(big_df) + 1))
-    big_df.columns = [
-        "序号",
-        "_",
-        "股票简称",
-        "_",
-        "_",
+        if not temp_df.empty:
+            big_df_list.append(temp_df)
+    if not big_df_list:
+        return pd.DataFrame(columns=_STOCK_REPORT_FUND_HOLD_COLUMNS)
+    big_df = pd.concat(big_df_list, ignore_index=True)
+    big_df = big_df.rename(columns=_STOCK_REPORT_FUND_HOLD_RENAME_MAP)
+    big_df = big_df[list(_STOCK_REPORT_FUND_HOLD_RENAME_MAP.values())]
+    big_df.insert(0, "序号", range(1, len(big_df) + 1))
+    big_df["股票代码"] = big_df["股票代码"].astype(str)
+    numeric_columns: list[str] = [
         "持有基金家数",
         "持股总数",
         "持股市值",
-        "_",
-        "持股变化",
         "持股变动数值",
         "持股变动比例",
-        "_",
-        "_",
-        "_",
-        "_",
-        "_",
-        "_",
-        "_",
-        "_",
-        "股票代码",
-        "_",
-        "_",
     ]
-    big_df = big_df[
-        [
-            "序号",
-            "股票代码",
-            "股票简称",
-            "持有基金家数",
-            "持股总数",
-            "持股市值",
-            "持股变化",
-            "持股变动数值",
-            "持股变动比例",
-        ]
-    ]
+    for column in numeric_columns:
+        big_df[column] = pd.to_numeric(big_df[column], errors="coerce")
     return big_df
 
 
@@ -115,7 +115,7 @@ def stock_report_fund_hold_detail(
     http://data.eastmoney.com/zlsj/ccjj/2020-12-31-008286.html
     :param symbol: 基金代码
     :type symbol: str
-    :param date: 财报发布日期, xxxx-03-31, xxxx-06-30, xxxx-09-30, xxxx-12-31
+    :param date: 财报发布日期，xxxx-03-31, xxxx-06-30, xxxx-09-30, xxxx-12-31
     :type date: str
     :return: 基金持仓-明细数据
     :rtype: pandas.DataFrame

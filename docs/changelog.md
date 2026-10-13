@@ -89,6 +89,109 @@
 
 ## 更新说明详情
 
+1.19.1 fix: fix futures_gfex_warehouse_receipt interface
+
+    1. 修复 futures_gfex_warehouse_receipt 接口报 `KeyError: "['增减'] not in index"` 的问题：广州期货交易所将增减字段由 regWbillQty 改为 diff，现改为按 diff 映射
+    2. 修正“增减”列的取值：原先映射的 regWbillQty 并非增减量，现取值与“今日仓单量”减“昨日仓单量”一致
+    3. 为接口补充 15 秒请求超时
+
+1.18.99 fix: raise a meaningful error when dce rejects the request
+
+    1. 大连商品交易所网站启用了瑞数反爬虫验证，程序请求返回 HTTP 412 挑战页，futures_warehouse_receipt_dce 接口此前会抛出令人费解的 `JSONDecodeError`；现改为抛出携带状态码的 `APIError` 并说明原因，同时补充 15 秒请求超时
+
+1.18.98 fix: fix futures_shfe_warehouse_receipt interface
+
+    1. 修复 futures_shfe_warehouse_receipt 接口在 2025-11-18 及之后的交易日报 `JSONDecodeError` 的问题：上海期货交易所不再提供 dailystock.dat 数据文件，现改为解析网页版仓单日报，更早日期仍使用原数据文件
+    2. 网页版按表头名称映射列，兼容“地区、仓库”“厂库、地区”“地区、交割仓库、本日数量”等不同列顺序，并正确处理合并单元格；此后日期的 DataFrame 仅包含 VARNAME、REGNAME、WHABBRNAME、WRTWGHTS、WRTCHANGE、ROWSTATUS 六列
+    3. 为新数据源补充 15 秒请求超时
+
+1.18.97 fix: fix stock_report_fund_hold interface
+
+    1. 修复 stock_report_fund_hold 接口因东方财富返回字段顺序变动导致的列错位问题，改为按字段名映射股票代码、股票简称及持仓变动相关数据
+    2. 为 stock_report_fund_hold 接口补充 15 秒请求超时，避免上游长时间无响应时进程一直阻塞不返回
+
+1.18.96 fix: fix stock_zh_a_spot interface
+
+    1. 修复 stock_zh_a_spot 接口在新浪分页请求超时参数为 0 时，上游长时间无响应时进程一直阻塞不返回的问题
+
+1.18.95 fix: raise a meaningful error when legulegu rejects the request
+
+    1. 修复乐咕乐股系列接口在上游拒绝请求时抛出 `AttributeError: 'NoneType' object has no attribute 'attrs'` 的问题：共用的 CSRF 获取逻辑此前既不校验状态码也不判空，上游返回的 403 错误页会被当作正常页面解析；现改为抛出携带状态码的 `APIError`，页面缺少 `_csrf` 标签时抛出 `DataParsingError`
+    2. 受益接口共 14 个：stock_buffett_index_lg、stock_index_pe_lg、stock_index_pb_lg、stock_market_pe_lg、stock_market_pb_lg、stock_a_congestion_lg、stock_ebs_lg、stock_a_gxl_lg、stock_hk_gxl_lg、stock_a_ttm_lyr、stock_a_all_pb、fund_stock_position_lg、fund_balance_position_lg、fund_linghuo_position_lg
+
+1.18.94 fix: fix fund_money_fund_info_em interface
+
+    1. 优化 stock_board_concept_hist_em 接口的空数据兜底逻辑：仅对合法空历史返回空 DataFrame，对无效概念板块名称或 BK 代码抛出明确异常
+
+1.18.93 fix: fix fund_money_fund_info_em interface
+
+    1. 修复 fund_money_fund_info_em 接口
+
+1.18.92 fix: improve Xueqiu login requirement guidance
+
+    1. 优化 stock_individual_basic_info_xq 系列接口在雪球返回 400016 时的提示信息，明确匿名访问当前受限且需要通过 `token=` 传入有效 `xq_a_token`
+    2. 补充中概股、美股、港股雪球公司信息接口的登录态依赖说明
+    3. 修复 fund_money_fund_info_em 接口因东方财富历史净值返回体新增字段而触发 Length mismatch 的问题
+
+1.18.91 docs: migrate the Markdown parser to myst-parser
+
+    1. 文档 Markdown 解析器由 recommonmark 迁移至 myst-parser，并移除随之无用的 sphinx-markdown-tables 与 markdown 依赖
+    2. 修正 docs 目录下 25 个文件的标题层级，使每个页面具备唯一的一级标题且不再跳级
+    3. 接口条目层级调整后可生成锚点，文档站中每个接口均支持直接链接定位
+    4. 为 dependabot 增加依赖分组配置，避免多个拉取请求同时修改同一文件
+
+1.18.90 build: declare __all__ and drop the akqmt integration
+
+    1. 为 akshare 声明 __all__，由 scripts/build_registry.py 生成并纳入 CI 校验
+    2. 修复 from akshare import * 会额外导出 39 个子模块名的问题
+    3. 移除 akqmt 集成及 full、qmt 两个附加依赖组
+    4. 修正 README 中的 Python 版本要求、失效的仓库条幅与错误的代码风格条幅
+
+1.18.89 build: raise the minimum supported Python version to 3.11
+
+    1. 将 requires-python 提升至 3.11 以上，并同步 classifiers、CI 测试矩阵与 ruff target-version
+    2. 修复 uv.lock 中为 Python 3.9 保留的旧版本解析分支所引发的 24 条依赖安全告警
+    3. 新增 dependabot 配置，自动跟进 uv 与 GitHub Actions 的依赖更新
+    4. 同步更新文档中关于 Python 最低版本的说明
+
+1.18.88 fix: fix fund_portfolio_hold_em interface
+
+    1. 修复 fund_portfolio_hold_em 接口
+
+1.18.87 fix: fix interface docs
+
+    1. 修复接口文档中接口半角符号问题
+
+1.18.86 fix: fix interface docs
+
+    1. 修复接口文档中接口半角符号问题
+
+1.18.85 feat: add interface registry search API
+
+    1. 新增 ak.search 接口检索功能，支持按接口名精确定位与关键词模糊检索
+    2. 新增 ak.interface_info 接口元数据查询功能
+    3. 新增 ak.list_categories 类目列表功能
+    4. 新增 CI 门禁，校验文档与接口导出的一致性
+
+1.18.84 fix: fix index_all_cni interface
+
+    1. 修复 index_all_cni 接口因国证指数返回体新增字段而触发 Length mismatch 的问题
+    2. 修复 sw_index_third_cons 接口因乐咕乐股申万三级行业表头变化而触发 Length mismatch 的问题
+
+1.18.83 fix: fix fund_portfolio_hold_em interface
+
+    1. 修复 fund_etf_fund_info_em 接口因东方财富历史净值返回体新增字段而触发 Length mismatch 的问题
+    2. 修复 fund_financial_fund_info_em 接口因 `pageSize=10000` 失效导致返回空数据的问题
+    3. 修复 fund_graded_fund_info_em 接口因东方财富历史净值返回体新增字段而触发 Length mismatch 的问题
+
+1.18.82 fix: fix fund_portfolio_hold_em interface
+
+    1. 修复 fund_portfolio_hold_em 接口因东方财富 `topline=10000` 失效而只能返回首屏摘要持仓的问题
+    2. 修复 stock_szse_sector_summary 接口在查询深交所尚未发布月份时直接抛出 KeyError 的问题
+    3. 修复 fund_etf_fund_info_em 接口因东方财富历史净值返回体新增字段而触发 Length mismatch 的问题
+    4. 修复 fund_financial_fund_info_em 接口因 `pageSize=10000` 失效导致返回空数据的问题
+    5. 修复 fund_graded_fund_info_em 接口因东方财富历史净值返回体新增字段而触发 Length mismatch 的问题
+
 1.18.81 fix: fix fund_value_estimation_em interface
 
     1. 修复 fund_value_estimation_em 接口在东方财富旧统一估值接口失效后持续返回空结果的问题
@@ -4732,7 +4835,7 @@
 
 1.8.42 add: add get_gfex_daily interface
 
-    1. 新增 get_gfex_daily 接口, 获取广期所的量价数据
+    1. 新增 get_gfex_daily 接口，获取广期所的量价数据
 
 1.8.41 add: add futures_index_ccidx interface
 
@@ -6391,6 +6494,8 @@
     3. 修改 air_quality_hist 接口的请求日期格式，从 '2022-01-01' 为 '20220101'
 
 ## 版本更新说明
+
+1.18.95 fix: raise a meaningful error when legulegu rejects the request
 
 1.18.64 fix: fix stock_buffett_index_lg interface
 
